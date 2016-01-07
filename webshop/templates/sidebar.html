@@ -2,10 +2,10 @@
 
     <ul class="nav nav-sidebar">
         <h4 style="text-align:center;">Categories</h4>
-        {% if current_user.admin and nav_category_name %}
+        {% if current_user.admin %}
 
         <li>
-            <form action="{{ url_for('browse_page.add_category', category_id=nav_category_id) }}" method="POST">
+            <form action="{{ url_for('browse_page.add_category', category_id=content[0]['category_id']) }}" method="POST">
                 <div class="input-group">
                     <input type="text" name="text-category_name" class="form-control" placeholder="Add category..." required>
                     <span class="input-group-btn"><button class="btn btn-success" type="submit">
@@ -25,7 +25,8 @@
         {% set category_name = category['name']%}
         {% set category_id = category['idCategory']%}
 
-        {% if nav_category_id and category_id|int == nav_category_id|int %}
+        {% set category_not_empty = content and content != [] %}
+        {% if not content_is_search_result and content|length == 1 and category_id|int == content[0]['category_id']|int %}
         <li class="active">
             {% else %}
         <li>
