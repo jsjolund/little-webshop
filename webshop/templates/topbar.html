@@ -25,7 +25,7 @@
                 <li><a href="{{ url_for('login_page.login') }}">Sign In</a></li>
                 {% endif %}
             </ul>
-            <form class="navbar-form navbar-right" action="{{ url_for('browse_page.search') }}" method="POST">
+            <form class="navbar-form navbar-right" action="{{ url_for('browse_page.search', order_by='name', order='desc') }}" method="POST">
                 <input type="text" class="form-control"  name="search-form" placeholder="Search...">
             </form>
         </div>

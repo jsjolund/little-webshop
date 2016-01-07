@@ -4,32 +4,33 @@
 
 <div class="table-responsive">
 
+
+    <!--Category asset listing-->
     {% if error_message %}
     <br>
     <font color="red">{{error_message}}</font>
     {% endif %}
 
-    {% set category_not_empty = nav_category_asset_row_list and nav_category_asset_row_list != () %}
-
+    {% set category_not_empty = content and content != [] %}
 
     {% if current_user.admin %}
-    <form action="{{ url_for('.delete_category', category_id=nav_category_id ) }}" method="POST">
-        <h2 class="sub-header">
-            {{ nav_category_name.capitalize() }}
-            <button class="btn btn-danger" type="submit">
-                <b>X</b>
-            </button>
-        </h2>
-    </form>
-    {% include 'browse_listing_admin.html' %}
-    {% else %}
-    <h2 class="sub-header">{{ nav_category_name.capitalize() }}</h2>
-    {% if category_not_empty %}
-    {% include 'browse_listing.html' %}
-    {% else %}
-    This category is empty.
-    {% endif %}
 
+    {% for current_content in content %}
+    {% include 'browse_listing_admin.html' %}
+    {% endfor %}
+
+    {% else %}
+
+
+    {% if category_not_empty %}
+
+    {% for current_content in content %}
+    {% include 'browse_listing.html' %}
+    {% endfor %}
+
+    {% else %}
+    Nothing to see here.
+    {% endif %}
 
     {% endif %}
 

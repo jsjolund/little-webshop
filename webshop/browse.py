@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, render_template, request, g
 import MySQLdb as mdb
+from flask import Blueprint, render_template, request, g
 from flask.ext.login import current_user
+
 from db_utils import get_all_categories
 
 browse_page = Blueprint('browse_page', __name__, template_folder='templates')
@@ -40,13 +41,14 @@ def display_category(category_id=None, order_by='name', order='asc', error_messa
     order = validate_order(order)
     db.execute('select * from Asset where Category_idCategory=%s order by %s %s' % (nav_category_id, order_by, order))
     nav_category_asset_row_list = db.fetchall()
+
+    content = [{'category_id': nav_category_id, 'category_name': nav_category_name, 'category_assets': nav_category_asset_row_list}]
+
     return render_template('browse.html',
                            error_message=error_message,
                            order=order,
                            order_by=order_by,
-                           nav_category_id=nav_category_id,
-                           nav_category_name=nav_category_name,
-                           nav_category_asset_row_list=nav_category_asset_row_list,
+                           content=content,
                            all_category_rows=get_all_categories(db))
 
 
@@ -128,11 +130,36 @@ def add_category(category_id):
 
     return display_category(category_id)
 
-@browse_page.route('/browse/search', methods=['POST'])
-def search():
+
+@browse_page.route('/browse/search', defaults={'order_by': 'name', 'order': 'asc'})
+@browse_page.route('/browse/search/<order_by>/<order>', methods=['POST'])
+def search(order_by='name', order='asc'):
+    order_by = validate_order_by(order_by)
+    order = validate_order(order)
+
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
     search_term = request.form['search-form']
-    db.execute('select * from Asset where name like %s' , ["%"+search_term+"%"])
+    db.execute('select * from Asset where name like %s order by %s %s', ["%" + search_term + "%", order_by, order])
     rows = db.fetchall()
-    return None
 
+    content = []
+    for row in rows:
+        category_id = row['Category_idCategory']
+        stored = -1
+        for i, current_category in enumerate(content):
+            if int(current_category['category_id']) == int(category_id):
+                stored = i
+                break
+        if stored != -1:
+            content[stored]['category_assets'].append(row)
+        else:
+            db.execute('select name from Category where idCategory=(%s)', [category_id])
+            category_name = db.fetchall()[0]['name']
+            content.append({'category_id': category_id, 'category_name': category_name, 'category_assets': [row]})
+
+    return render_template('browse.html',
+                           error_message=None,
+                           order=order,
+                           order_by=order_by,
+                           content=content,
+                           all_category_rows=get_all_categories(db))

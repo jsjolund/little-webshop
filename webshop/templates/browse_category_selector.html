@@ -2,7 +2,7 @@
     {% for row in all_category_rows %}
     {% set category_name = row['name']%}
     {% set category_id = row['idCategory']%}
-    {% if category_id|int == nav_category_id|int %}
+    {% if category_id|int == current_content['category_id']|int %}
     asdf
     <option value="{{category_id}}" selected>{{category_name}}</option>
     {% else %}

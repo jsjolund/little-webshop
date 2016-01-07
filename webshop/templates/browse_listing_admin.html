@@ -1,3 +1,12 @@
+<form action="{{ url_for('.delete_category', category_id=current_content['category_id'] ) }}" method="POST">
+    <h2 class="sub-header">
+        {{ current_content['category_name'].capitalize() }}
+        <button class="btn btn-danger" type="submit">
+            <b>X</b>
+        </button>
+    </h2>
+</form>
+
 <table class="table table-striped">
 
     <thead>
@@ -8,9 +17,9 @@
             Image link
         </th>
         {% if (order_by == "name") and (order == "asc") %}
-        {% set link=url_for('browse_page.display_category', category_id=nav_category_id, order_by='name', order='desc') %}
+        {% set link=url_for('browse_page.display_category', category_id=current_content['category_id'], order_by='name', order='desc') %}
         {% else %}
-        {% set link=url_for('browse_page.display_category', category_id=nav_category_id, order_by='name', order='asc') %}
+        {% set link=url_for('browse_page.display_category', category_id=current_content['category_id'], order_by='name', order='asc') %}
         {% endif %}
 
         <th>
@@ -20,17 +29,17 @@
             Category
         </th>
         {% if (order_by == "price") and (order == "asc") %}
-        {% set link=url_for('browse_page.display_category', category_id=nav_category_id, order_by='price', order='desc') %}
+        {% set link=url_for('browse_page.display_category', category_id=current_content['category_id'], order_by='price', order='desc') %}
         {% else %}
-        {% set link=url_for('browse_page.display_category', category_id=nav_category_id, order_by='price', order='asc') %}
+        {% set link=url_for('browse_page.display_category', category_id=current_content['category_id'], order_by='price', order='asc') %}
         {% endif %}
         <th>
             <a href="{{ link }}">Price</a>
         </th>
         {% if (order_by == "amount") and (order == "asc") %}
-        {% set link=url_for('browse_page.display_category', category_id=nav_category_id, order_by='amount', order='desc') %}
+        {% set link=url_for('browse_page.display_category', category_id=current_content['category_id'], order_by='amount', order='desc') %}
         {% else %}
-        {% set link=url_for('browse_page.display_category', category_id=nav_category_id, order_by='amount', order='asc') %}
+        {% set link=url_for('browse_page.display_category', category_id=current_content['category_id'], order_by='amount', order='asc') %}
         {% endif %}
         <th>
             <a href="{{ link }}">Amount</a>
@@ -43,7 +52,7 @@
 
     <tbody>
     <tr>
-        <form action="{{ url_for('.add_asset', category_id=nav_category_id) }}" method="POST">
+        <form action="{{ url_for('.add_asset', category_id=current_content['category_id']) }}" method="POST">
             <td></td>
             <td><input class="form-control" type="text" name="text-imagePath"></td>
             <td height="120"><input class="form-control" size="12" type="text" name="text-name"></td>
@@ -53,7 +62,7 @@
 
             <td></td>
             <td style="text-align:right">
-                <form action="{{ url_for('.add_asset', category_id=nav_category_id) }}">
+                <form action="{{ url_for('.add_asset', category_id=current_content['category_id']) }}">
                     <button class="btn btn-success" type="submit"><span class=btn-symbol><b>&#xff0b;</b></span></button>
                 </form>
             </td>
@@ -61,14 +70,14 @@
         </form>
     </tr>
     <!--Asset data-->
-    {% for category_asset in nav_category_asset_row_list %}
+    {% for category_asset in current_content['category_assets'] %}
     {% set asset_name = category_asset['name'] %}
     {% set asset_id = category_asset['idAsset'] %}
     {% set asset_price = category_asset['price'] %}
     {% set asset_amount = category_asset['amount'] %}
     {% set asset_image = category_asset['imagePath'] %}
     <tr>
-        <form action="{{ url_for('.update_asset', category_id=nav_category_id, asset_id=asset_id ) }}" method="POST">
+        <form action="{{ url_for('.update_asset', category_id=current_content['category_id'], asset_id=asset_id ) }}" method="POST">
             <!--Update asset button -->
             <td style="text-align:left">
                 <button class="btn btn-warning" type="submit"><span class=btn-symbol>&#x21bb;</span></button>
@@ -98,7 +107,7 @@
         </td>
         <td style="text-align:right">
             <!-- Remove asset button -->
-            <form action="{{ url_for('.delete_asset', category_id=nav_category_id, asset_id=asset_id ) }}"
+            <form action="{{ url_for('.delete_asset', category_id=current_content['category_id'], asset_id=asset_id ) }}"
                   method="POST">
                 <button class="btn btn-danger" type="submit"><b>X</b></button>
             </form>
