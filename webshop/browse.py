@@ -127,3 +127,12 @@ def add_category(category_id):
             return display_category(str(db.fetchall()[0]['idCategory']))
 
     return display_category(category_id)
+
+@browse_page.route('/browse/search', methods=['POST'])
+def search():
+    db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
+    search_term = request.form['search-form']
+    db.execute('select * from Asset where name like %s' , ["%"+search_term+"%"])
+    rows = db.fetchall()
+    return None
+
