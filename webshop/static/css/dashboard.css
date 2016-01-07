@@ -207,6 +207,7 @@ margin-right:-20px;
     min-width: 2;
     max-width: 60px;
 }
+
 .basket .table > tfoot > tr > td {
     padding: 8px;
     line-height: 1.42857143;
@@ -223,4 +224,11 @@ img.centered {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+/* previous baskets list*/
+.table-responsive .table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 00px;
 }
