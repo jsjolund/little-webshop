@@ -4,36 +4,29 @@
 
 <div class="table-responsive">
 
-
     <!--Category asset listing-->
     {% if error_message %}
-    <br>
-    <font color="red">{{error_message}}</font>
+    <br><font color="red">{{error_message}}</font>
     {% endif %}
 
-    {% set category_not_empty = content and content != [] %}
+
+    {% if content and content|length >= 1 %}
 
     {% if current_user.admin %}
-
     {% for current_content in content %}
     {% include 'browse_listing_admin.html' %}
     {% endfor %}
-
     {% else %}
-
-
-    {% if category_not_empty %}
-
     {% for current_content in content %}
     {% include 'browse_listing.html' %}
     {% endfor %}
+    {% endif %}
 
     {% else %}
-    Nothing to see here.
-    {% endif %}
+
+    Your search '{{ prev_search_term }}' did not match any items.
 
     {% endif %}
-
 
 </div>
 

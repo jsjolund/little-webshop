@@ -26,7 +26,11 @@
                 {% endif %}
             </ul>
             <form class="navbar-form navbar-right" action="{{ url_for('browse_page.search', order_by='name', order='desc') }}" method="POST">
-                <input type="text" class="form-control"  name="search-form" placeholder="Search...">
+                {% if prev_search_term %}
+                <input type="text" class="form-control" name="search-form" placeholder={{prev_search_term}}>
+                {% else %}
+                <input type="text" class="form-control" name="search-form" placeholder="Search...">
+                {% endif %}
             </form>
         </div>
     </div>

@@ -1,5 +1,4 @@
 <div class="col-sm-3 col-md-2 sidebar">
-
     <ul class="nav nav-sidebar">
         <h4 style="text-align:center;">Categories</h4>
         {% if current_user.admin and content%}
@@ -26,7 +25,7 @@
         {% set category_id = category['idCategory']%}
 
         {% set category_not_empty = content and content != [] %}
-        {% if not content_is_search_result and content|length == 1 and category_id|int == content[0]['category_id']|int %}
+        {% if not prev_search_term and content|length == 1 and category_id|int == content[0]['category_id']|int %}
         <li class="active">
             {% else %}
         <li>

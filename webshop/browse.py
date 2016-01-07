@@ -162,5 +162,5 @@ def search(order_by='name', order='asc'):
                            order=order,
                            order_by=order_by,
                            content=content,
-                           content_is_search_result=True,
+                           prev_search_term=search_term,
                            all_category_rows=get_all_categories(db))
