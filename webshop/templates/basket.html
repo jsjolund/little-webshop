@@ -36,14 +36,18 @@
 
         <tr>
             <td width="15%">
-                <a href="{{asset_image}}">
+                <a href="{{url_for('asset_page.display_asset', asset_id=asset_id) }}">
                     <img border="0"
                          alt="{{asset_name}}"
                          src="{{asset_image}}"
                          width="50px">
                 </a>
             </td>
-            <td width="10%"><b>{{ asset_name.capitalize() }}</b></td>
+            <td width="10%">
+                <a href="{{url_for('asset_page.display_asset', asset_id=asset_id) }}">
+                    <b>{{ asset_name.capitalize() }}</b>
+                </a>
+            </td>
             <td width="10%"></td>
             {% if back_order > 0 %}
             <td class="text-warning" width="10%" style="text-align:right">{{ asset_amount }}</td>
