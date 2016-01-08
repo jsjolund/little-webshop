@@ -80,10 +80,13 @@ def update_asset(category_id, asset_id):
 @browse_page.route('/browse/delete_asset/<category_id>', defaults={'asset_id': None}, methods=['POST'])
 @browse_page.route('/browse/delete_asset/<category_id>/<asset_id>', methods=['POST'])
 def delete_asset(category_id, asset_id=None):
-    if current_user.admin:
-        db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-        db.execute('delete from Asset where idAsset=(%s)', [asset_id])
-        db.connection.commit()
+    try:
+        if current_user.admin:
+            db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
+            db.execute('delete from Asset where idAsset=(%s)', [asset_id])
+            db.connection.commit()
+    except:
+        return display_category(category_id=category_id, error_message="Cannot remove assets which are referenced by basket(s).")
     return display_category(category_id)
 
 
